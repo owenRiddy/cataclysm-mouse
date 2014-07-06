@@ -165,7 +165,7 @@ int main(int argc, char** argv){
         sleep(2);
         updateMacros(mouse);
 
-        printf("Releasing the interface\n");
+        printf("Releasing the interface (return control to kernel)\n");
         libusb_release_interface(mouse, 0);
 
         printf("Packing up and ending the program\n");
