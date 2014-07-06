@@ -15,12 +15,11 @@ int updateMapping(libusb_device_handle* hnd);
 int updateMacros(libusb_device_handle* hnd);
 
 int diagnoseDevice(libusb_device_handle* hnd){
-
     if(hnd == NULL) {
-        printf("Error - epic mouse not found!!\n");
+        printf("Error - SteelSeries World of Warcraft: Cataclysm MMO Gaming Mouse not found\n");
         return 1;
     } else {
-        printf("Epic Mouse was located\n");
+        printf("SteelSeries World of Warcraft: Cataclysm MMO Gaming Mouse was located\n");
     }
 
     struct libusb_device_descriptor des;
@@ -130,7 +129,7 @@ int main(int argc, char** argv){
         }
     }
 
-    libusb_device_handle* epicMouse;
+    libusb_device_handle* mouse;
     if(opt_dryRun == 0){
         //libusb_context* context = NULL;
         ret = libusb_init(NULL);
@@ -138,90 +137,16 @@ int main(int argc, char** argv){
         //libusb_set_debug(NULL, LIBUSB_LOG_LEVEL_DEBUG);
         libusb_set_debug(NULL, LIBUSB_LOG_LEVEL_WARNING);
 
-        epicMouse = libusb_open_device_with_vid_pid(NULL, vendor_id, product_id);
-        err = diagnoseDevice(epicMouse);
+        mouse = libusb_open_device_with_vid_pid(NULL, vendor_id, product_id);
+        err = diagnoseDevice(mouse);
         if(err) printf("Error printing out diagnostic info");
 
         printf("Detaching Kernel driver. Good luck\n");
-        libusb_set_auto_detach_kernel_driver(epicMouse, 1);
+        libusb_set_auto_detach_kernel_driver(mouse, 1);
 
         printf("Claiming the interface...\n");
-        libusb_claim_interface(epicMouse, 0);
+        libusb_claim_interface(mouse, 0);
     }
-
-    uint8_t aMacro[] = {0x61, 0x04, 0x62, 0x04, 0x68, 0x01};
-    //char bMacro[] = {0x61, 0x05, 0x61, 0x06, 0x62, 0x05, 0x62, 0x06, 0x68, 0x01};
-    //char bMacro[] = {0x61, 0x05, 0x62, 0x05, 0x68, 0x01};
-    //ar winaMacro[] = {0x61, 0xe1, 0x68, 0x01, 0x61, 0x04, 0x68, 0x01, 0x62, 0xe1, 0x68, 0x01, 0x62, 0x04, 0x68, 0x01};
-    int i;
-    for(i = 4; i < 15; i++){
-        aMacro[1] = i;
-        aMacro[3] = i;
-        addMacro(i, aMacro, sizeof(aMacro));
-    }
-
-    //Dota bindings - r
-    aMacro[1] = 0x15;
-    aMacro[3] = 0x15;
-    addMacro(7, aMacro, sizeof(aMacro));
-
-    //char altTemplate[] = {0x61, 0xe2, 0x61, 0x04, 0x68, 0x01, 0x62, 0xe2, 0x62, 0x04, 0x68, 0x01};
-    //Got rid of alt!
-    uint8_t altTemplate[] = {0x61, 0x04, 0x68, 0x01, 0x62, 0x04, 0x68, 0x01};
-    //Dota bindings - M-u
-    altTemplate[1] = 0x18;
-    altTemplate[5] = 0x18;
-    addMacro(8, altTemplate, sizeof(altTemplate));
-
-    //Dota bindings - M-i
-    altTemplate[1] = 0x0c;
-    altTemplate[5] = 0x0c;
-    addMacro(9, altTemplate, sizeof(altTemplate));
-
-    //Dota bindings - M-g
-    altTemplate[1] = 0x0a;
-    altTemplate[5] = 0x0a;
-    addMacro(10, altTemplate, sizeof(altTemplate));
-
-    //Dota bindings - M-h
-    altTemplate[1] = 0x0b;
-    altTemplate[5] = 0x0b;
-    addMacro(11, altTemplate, sizeof(altTemplate));
-
-    //Dota bindings - M-j
-    altTemplate[1] = 0x0d;
-    altTemplate[5] = 0x0d;
-    addMacro(12, altTemplate, sizeof(altTemplate));
-
-
-    //char mod[] = {
-    //C-a
-    //0x61, 0xe0, 0x61, 0x26, 0x68, 0x01, 0x62, 0x26, 0x62, 0xe0, 0x68, 0x01
-    //Win-a
-    //0x61, 0xe3, 0x68, 0x01, 0x61, 0x04, 0x68, 0x01, 0x62, 0xe3, 0x68, 0x01, 0x62, 0x04, 0x68, 0x01,
-    //LShift-a
-    //0x61, 0xe1, 0x68, 0x01, 0x61, 0x04, 0x68, 0x01, 0x62, 0xe1, 0x68, 0x01, 0x62, 0x04, 0x68, 0x01,
-    //M-a
-    //0x61, 0xe2, 0x68, 0x01, 0x61, 0x04, 0x68, 0x01, 0x62, 0x04, 0x68, 0x01, 0x62, 0xe2, 0x68, 0x01,
-    //};
-    //addMacro(10, mod, sizeof(mod));
-
-    /*int noOfKeys = 5;
-    int startConst = 39;
-    char* modkey = (char*) malloc(noOfKeys * 6);
-    for(i = 0; i < noOfKeys; i++){
-        modkey[i * 6 + 0] = 0x61;
-        modkey[i * 6 + 1] = i+startConst;
-        modkey[i * 6 + 2] = 0x62;
-        modkey[i * 6 + 3] = i+startConst;
-        modkey[i * 6 + 4] = 0x68;
-        modkey[i * 6 + 5] = 0x01;
-    }
-    addMacro(4, modkey, noOfKeys * 6);
-    free(modkey);
-
-    //addMacro(9, winaMacro, sizeof(winaMacro));
-    */
 
     if(opt_file == 1){
         FILE* fp;
@@ -231,18 +156,20 @@ int main(int argc, char** argv){
         while(fgets(line, PARSER_BUFFER, fp) != NULL){
             parse(line);
         }
+    } else {
+        printf("No config file, resetting mouse (maybe try running this with --help?)\n");
     }
 
     if(opt_dryRun == 0){
-        updateMapping(epicMouse);
+        updateMapping(mouse);
         sleep(2);
-        updateMacros(epicMouse);
+        updateMacros(mouse);
 
         printf("Releasing the interface\n");
-        libusb_release_interface(epicMouse, 0);
+        libusb_release_interface(mouse, 0);
 
         printf("Packing up and ending the program\n");
-        libusb_close(epicMouse);
+        libusb_close(mouse);
         libusb_exit(NULL);
     }
 

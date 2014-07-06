@@ -1,0 +1,4 @@
+ACTION!="add|change", GOTO="Cat Mouse"
+SUBSYSTEM=="usb",ATTRS{idVendor}=="1038", ATTRS{idProduct}=="1320", GROUP="plugdev"
+
+LABEL="Cat Mouse"

@@ -117,7 +117,6 @@ int parse(char* string){
         case '-':
             break;
         case '[':
-            printf("%i\n", i);
             if(i == 0){
                 state = 0;
                 key = 0;
@@ -125,7 +124,6 @@ int parse(char* string){
             }
             break;
         case ']':
-            printf("%i\n", state);
             if(state == 0){
                 state = 1;
                 key = 0;

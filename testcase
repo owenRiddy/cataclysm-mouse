@@ -1,21 +1,21 @@
 
-This file is the test cast for setting a Cataclysm mouse by Steelseries while running linux.
+This file is an example input file to set keybindings on a SteelSeries World of Warcraft: Cataclysm MMO Gaming Mouse (being run under linux).
 
 S- is the windows key ("super") prefix
 M- for alt
 C- for control
 L- for left shift
 
-[4] S-s S-w
-[5] a
-[6] L-w
-[7]
+[4] S-w
+[5] S-r
+[6] S-s
+[7] S-f
 [8]
 [9]
-[10]
+[10] S-t
 [11]
 [12]
-[13]
+[13] S-c
 [14]
 
 
