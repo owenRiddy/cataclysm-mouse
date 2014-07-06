@@ -1,0 +1,27 @@
+
+This file is the test cast for setting a Cataclysm mouse by Steelseries while running linux.
+
+S- is the windows key ("super") prefix
+M- for alt
+C- for control
+L- for left shift
+
+[4] S-s S-w
+[5] a
+[6] L-w
+[7]
+[8]
+[9]
+[10]
+[11]
+[12]
+[13]
+[14]
+
+
+
+
+
+
+
+This should do some window-managing magic.
