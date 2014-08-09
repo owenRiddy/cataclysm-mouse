@@ -1,0 +1,10 @@
+A linux program for setting up keybindings for a SteelSeries World of Warcraft Cataclysm MMO Gaming Mouse. I was given one by a friend, and having to use windows to set up keybindings frustrated me no end. This program was the result of reverse-engineering some basic parts of the windows driver for writing keyboard macros to the mouse's onboard ram.
+
+Requires libusb. Written & tested on Debian 8 testing.
+
+The udev rule allows userspace programs wrtite-access to the mouse so that this program doesn't need to be run as a super user. I put it in /etc/udev/rules.d/
+
+To use:
+
+make
+./setup-cataclysm-mouse -h -f testcase.mouse

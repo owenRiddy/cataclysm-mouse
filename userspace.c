@@ -99,6 +99,7 @@ int main(int argc, char** argv){
 
         case 'd':
             opt_dryRun = 1;
+            printf("Changes will not be written to the mouse\n");
             break;
 
         case 'v':
