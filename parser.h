@@ -20,6 +20,8 @@ Mouse 5 to save a file in emacs
  *
  */
 
+extern uint8_t* illuminationArray;
+
 //parses a string. This function maintains the macro info itself
 int parse(char* string);
 

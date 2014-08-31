@@ -48,7 +48,7 @@ int maintainKeyArray(int key, uint8_t* stanza, int len){
     }
 
     if(len != 5){
-        printf("Len is not 5 - only setting one key at a time presently");
+        printf("Len is not 5 - only setting one key at a time presently\n");
         return -2;
     }
 
@@ -116,7 +116,7 @@ int addMacro(int num, uint8_t* macro, int len){
     int registerSize = sizeof(macroRegister) / sizeof(macroRegister[0]);
     int* newRegister = (int*) malloc(sizeof(macroRegister));
     if(newRegister == NULL){
-        printf("I can't find enough memory :'(");
+        printf("I can't find enough memory :'(\n");
         exit(1);
     }
 

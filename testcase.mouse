@@ -18,10 +18,18 @@ L- for left shift
 [13] S-c
 [14]
 
-
-
-
-
-
-
 This should do some window-managing magic.
+
+
+== Set the colour of the mouse LED pulses ==
+You can also set the illumination settings based on an RGB value. For example, this sets the mouse to glow green:
+
+Only way I found to disable the mouse glow (Off)
+![L] 0 0 0
+
+Red (Off)
+![L] 255 0 0
+Green
+[L] 0 255 0
+Blue (Off)
+![L] 0 0 255

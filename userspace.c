@@ -11,6 +11,7 @@
 #include "parser.h"
 
 //send updated info to the Mouse
+int setIllumination(libusb_device_handle* hnd);
 int updateMapping(libusb_device_handle* hnd);
 int updateMacros(libusb_device_handle* hnd);
 
@@ -112,7 +113,7 @@ int main(int argc, char** argv){
             opt_file = 1;
             filename = strdup(optarg);
             if(filename == NULL) {
-                printf("Error parsing file name");
+                printf("Error parsing file name\n");
                 exit(1);
             }
             break;
@@ -140,13 +141,14 @@ int main(int argc, char** argv){
 
         mouse = libusb_open_device_with_vid_pid(NULL, vendor_id, product_id);
         err = diagnoseDevice(mouse);
-        if(err) printf("Error printing out diagnostic info");
+        if(err) printf("Error printing out diagnostic info\n");
 
         printf("Detaching Kernel driver. Good luck\n");
         libusb_set_auto_detach_kernel_driver(mouse, 1);
 
         printf("Claiming the interface...\n");
-        libusb_claim_interface(mouse, 0);
+        libusb_claim_interface(mouse, 0); //This is the control interface for accessing onboard memory; etc
+        libusb_claim_interface(mouse, 3); //This interface is where we send illumination information
     }
 
     if(opt_file == 1){
@@ -166,8 +168,13 @@ int main(int argc, char** argv){
         sleep(2);
         updateMacros(mouse);
 
+        if(illuminationArray != NULL){
+            setIllumination(mouse);
+        }
+
         printf("Releasing the interface (return control to kernel)\n");
         libusb_release_interface(mouse, 0);
+        libusb_release_interface(mouse, 3);
 
         printf("Packing up and ending the program\n");
         libusb_close(mouse);
@@ -175,6 +182,32 @@ int main(int argc, char** argv){
     }
 
     return 0;
+}
+
+int setIllumination(libusb_device_handle* hnd){
+    int ret;
+
+    printf("Setting up illumination (%" PRIu8 " %" PRIu8 " %" PRIu8 ")\n",
+           illuminationArray[0],
+           illuminationArray[1],
+           illuminationArray[2]);
+
+    ret = libusb_control_transfer(hnd,
+                                  0x21, //bmRequestType - 0x40 = Host -> Device, Class, Interface recieves
+                                  9, //bRequest - Set the illumination
+                                  0x0300, //wValue - Colour (r-g-b)
+                                  3, //wIndex - The interface we are talking to. In this case, no 3
+                                  illuminationArray, //data
+                                  3, //wLength
+                                  5000); //timeout - set
+
+    if(ret < 1) {
+        printf("Error in setting illumination: %d\n", ret);
+    } else {
+        printf("Illuminated (error: %d, positive = no error)...\n", ret);
+    }
+
+    return ret;
 }
 
 //send updated info to the Mouse
@@ -186,13 +219,13 @@ int updateMapping(libusb_device_handle* hnd){
                                   0x40, //bmRequestType - 0x40 = Host -> Device, Vendor, Device recieves
                                   16, //bRequest - Set key maps
                                   0, //wValue - Could mean anything
-                                  0, //wIndex - Could mean anything
+                                  0, //wIndex - Send to the control interface (options here include control, keyboard, mouse, etc)
                                   keySetArray, //data
                                   keySetArray_size, //wLength
                                   5000); //timeout - set
 
     if(ret < 1) {
-        printf("Error in mapping: %d", ret);
+        printf("Error in mapping: %d\n", ret);
     } else {
         printf("Mapping keys complete (error: %d, positive = no error)...\n", ret);
     }
@@ -218,7 +251,7 @@ int updateMacros(libusb_device_handle* hnd){
                                   macroRegister[0], //wLength
                                   5000); //timeout - set
     if (ret < 1) {
-        printf("Error in transfer: %d", ret);
+        printf("Error in transfer: %d\n", ret);
     } else {
         printf("Completed transfer (%d bytes)\n", ret);
     }
