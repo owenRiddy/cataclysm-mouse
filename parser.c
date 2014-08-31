@@ -178,6 +178,7 @@ int parse(char* string){
             state = 1;
             key = 0;
             modifier = 0;
+            i = i + 1; //Skip the first space after the ]
             break;
         default:
             if(state == 1){
