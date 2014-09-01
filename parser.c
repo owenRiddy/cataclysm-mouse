@@ -1,6 +1,7 @@
 #include "parser.h"
 
 uint8_t* illuminationArray = NULL;
+uint8_t* CPIArray = NULL;
 
 size_t prependByteToString(uint8_t** array, uint8_t byte, size_t arraySize){
     //I am optomistic, I have enough memory
@@ -51,6 +52,7 @@ int processArg(uint8_t** array, size_t arraySize, uint8_t key, int modifier){
 // 1-3, unused
 // 4 to 14, keynumbers
 // 15, RGB illumination
+// 16, set CPI (units moved per inch)
 int getParseMode(char* string){
     int retCode = 0;
     int i = 0;
@@ -69,7 +71,10 @@ int getParseMode(char* string){
             retCode = retCode * 10 + string[i] - '0';
             break;
         case 'L':
-            retCode = 15;
+            return 15;
+            break;
+        case 'C':
+            return 16;
             break;
         default:
             //Invalid character
@@ -101,7 +106,34 @@ int parseIllumination(char* string){
         printf("Error reading illumination values from '%s' (%d)\n", string, ret);
         free(illuminationArray);
         illuminationArray = NULL;
+        return -1;
     }
+
+    return 0;
+}
+
+int parseCPI(char* string){
+    printf("Setting CPI value\n");
+    int ret = -1;
+
+    //I hope you have enough memory for this
+    if(CPIArray != NULL){
+        free(CPIArray);
+    }
+
+    CPIArray = malloc(sizeof(uint8_t));
+
+    ret = sscanf(string, "[C] %" SCNd8,
+                 &CPIArray[0]);
+
+    if(ret != 1){
+        printf("Error reading CPI value from '%s' (%d)\n", string, ret);
+        free(CPIArray);
+        illuminationArray = NULL;
+        return -1;
+    }
+
+    return 0;
 }
 
 int parse(char* string){
@@ -119,6 +151,11 @@ int parse(char* string){
 
     if(keynum == 15){
         parseIllumination(string);
+        return 0;
+    }
+
+    if(keynum == 16){
+        parseCPI(string);
         return 0;
     }
 

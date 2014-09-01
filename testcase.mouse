@@ -35,3 +35,8 @@ Green
 [L] 0 255 0
 Blue (Off)
 ![L] 0 0 255
+
+== Set the CPI ==
+I don't know what it stands for - something per inch. Low numbers means the mouse moves further with a small wrist flick. Use integers. I tried 1 to 20.
+
+[C] 3

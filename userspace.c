@@ -11,7 +11,8 @@
 #include "parser.h"
 
 //send updated info to the Mouse
-int setIllumination(libusb_device_handle* hnd);
+int updateIllumination(libusb_device_handle* hnd);
+int updateCPI(libusb_device_handle* hnd);
 int updateMapping(libusb_device_handle* hnd);
 int updateMacros(libusb_device_handle* hnd);
 
@@ -148,6 +149,7 @@ int main(int argc, char** argv){
 
         printf("Claiming the interface...\n");
         libusb_claim_interface(mouse, 0); //This is the control interface for accessing onboard memory; etc
+        libusb_claim_interface(mouse, 1); //This interface is for fiddling with the CPI
         libusb_claim_interface(mouse, 3); //This interface is where we send illumination information
     }
 
@@ -169,11 +171,15 @@ int main(int argc, char** argv){
         updateMacros(mouse);
 
         if(illuminationArray != NULL){
-            setIllumination(mouse);
+            updateIllumination(mouse);
+        }
+        if(CPIArray != NULL){
+            updateCPI(mouse);
         }
 
         printf("Releasing the interface (return control to kernel)\n");
         libusb_release_interface(mouse, 0);
+        libusb_release_interface(mouse, 1);
         libusb_release_interface(mouse, 3);
 
         printf("Packing up and ending the program\n");
@@ -184,7 +190,7 @@ int main(int argc, char** argv){
     return 0;
 }
 
-int setIllumination(libusb_device_handle* hnd){
+int updateIllumination(libusb_device_handle* hnd){
     int ret;
 
     printf("Setting up illumination (%" PRIu8 " %" PRIu8 " %" PRIu8 ")\n",
@@ -208,6 +214,29 @@ int setIllumination(libusb_device_handle* hnd){
     }
 
     return ret;
+}
+
+int updateCPI(libusb_device_handle* hnd){
+    int ret;
+    printf("Setting CPI to %d (low = high CPI)", CPIArray[0]);
+
+    ret = libusb_control_transfer(hnd,
+                                  0x21, //bmRequestType - 0x40 = Host -> Device, Class, Interface recieves
+                                  9, //bRequest - Set the illumination
+                                  0x0300, //wValue - Colour (r-g-b)
+                                  1, //wIndex - The interface we are talking to. In this case, no 3
+                                  CPIArray, //data
+                                  1, //wLength
+                                  5000); //timeout - set
+
+    if(ret < 1) {
+        printf("Error in setting CPI: %d\n", ret);
+    } else {
+        printf("CPI set (error: %d, positive = no error)...\n", ret);
+    }
+
+    return ret;
+
 }
 
 //send updated info to the Mouse
