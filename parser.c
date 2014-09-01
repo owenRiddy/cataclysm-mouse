@@ -172,6 +172,17 @@ int parse(char* string){
                 key = key + 9;
             }
             break;
+        case 'A':
+            if((strlen(string) < i + 5) || (string[i+1] != '-')){
+                printf("parse error char $d, expected; eg; A-040 in %s\n", i, string);
+                exit(1);
+            } else {
+                if(sscanf(&(string[i]), "A-%" SCNu8, &key) == 0){
+                    printf("Scanf failed to read the arbitary code; which should be a 3-didget code less than 256 - %s\n", &(string[i]));
+                    exit(1);
+                }
+                i = i + 4;
+            }
         case '-':
             break;
         case ']':
