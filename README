@@ -2,7 +2,7 @@ A linux program for setting up keybindings for a SteelSeries World of Warcraft C
 
 Requires libusb. Written & tested on Debian 8 testing.
 
-The udev rule allows userspace programs wrtite-access to the mouse so that this program doesn't need to be run as a super user. I put it in /etc/udev/rules.d/
+The udev rule allows userspace programs write-access to the mouse so that this program doesn't need to be run as a super user. I put it in /etc/udev/rules.d/
 
 To use:
 

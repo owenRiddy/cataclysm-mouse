@@ -40,3 +40,93 @@ Blue (Off)
 I don't know what it stands for - something per inch. Low numbers means the mouse moves further with a small wrist flick. Use integers. I tried 1 to 20.
 
 [C] 3
+
+== Keycode reminder ==
+
+These are the keycodes that can be sent in via the arbitrary macro option (A-xxx). The values here are in hexadecimal and need to be translated into decimal for the parser. Credit to BuffaloX of linuxquestions.org for making this list.
+
+# 04-x1d='a-z'
+# 1e-x27='1-0'
+# 28=return
+# 29=Escape
+# 2a=backspace
+# 2b=tab
+# 2c=space
+# 2d='+'
+# 2e=dead_acute
+# 2f='å'
+# 30=dead_diaeresis
+# 31=' apostrophe
+# 32=' apostrophe
+# 33='æ'
+# 34='ø'
+# 35='½'
+# 36=','
+# 37='.'
+# 38='-'
+# 39= keycode 66
+# 3a-x45=F1-F12
+# 46=print screen
+# 47=scroll lock
+# 48=pause
+# 49=insert
+# 4a=home
+# 4b=prior
+# 4c=delete
+# 4d=end
+# 4e=next
+# 4f=right
+# 50=left
+# 51=down
+# 52=up
+# 53 numlock
+# 54 KP divide
+# 55 KP multiply
+# 56 KP subtract
+# 57 kp add
+# 58 kp enter
+# 59-64 kp 1-9+0
+# 65=menu
+# 66=power off
+# 67=kp equal
+# 68=tools
+# 69=launch 5
+# 6a=launch 6
+# 6b=launch 7
+# 6c=launch 8
+# 6d=launch 9
+# 75=help
+# 7f=audio mute
+# 80=audio vol up
+# 81=audio vol down
+# 85=kp decimal
+# 88=Hiragana_Katakana
+# 9c=delete
+# b6-b7=()
+# e0=left ctrl
+# e1=left shift
+# e2=left alt
+# e3=left meta
+# e4=right ctrl
+# e5=right shift
+# e6=lvl 3 shift
+# e7=right super
+# e8=play pause/resume
+# e9=audio stop
+# ea=audio previous
+# eb=audio next
+# ec=eject
+# ed=vol up
+# ee=vol dwn
+# ef=audio mute/unmute
+# f0=www
+# f1=back
+# f2=forward
+# f3=cancel
+# f4=find
+# f5=scroll up
+# f6=scxroll dwn
+# f8=sleep
+# fa=screensaver
+# fb=reload
+# fc=calculator
