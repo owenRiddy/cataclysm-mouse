@@ -197,7 +197,7 @@ int parse(char* string){
             //C- -> 0xe0
             modifier = modifier + 0xe0;
             if((strlen(string) < i + 2) || (string[i+1] != '-')){
-                printf("parse error char $d, expected; eg; C-x in %s\n", i, string);
+                printf("parse error char %d, expected; eg; C-x in %s\n", i, string);
                 exit(1);
             }
             break;
@@ -211,7 +211,7 @@ int parse(char* string){
             break;
         case 'A':
             if((strlen(string) < i + 5) || (string[i+1] != '-')){
-                printf("parse error char $d, expected; eg; A-040 in %s\n", i, string);
+                printf("parse error char %d, expected; eg; A-040 in %s\n", i, string);
                 exit(1);
             } else {
                 if(sscanf(&(string[i]), "A-%" SCNu8, &key) == 0){
